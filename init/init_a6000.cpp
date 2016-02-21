@@ -36,6 +36,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
+#include <sys/_system_properties.h>
 #include <unistd.h>
 #include "init_msm8916.h"
 #include "property_service.h"
@@ -44,11 +46,22 @@
 #include "log.h"
 #include "util.h"
 
+void property_override(char const prop[], char const value[])
+{
+    prop_info *pi;
+
+    pi = (prop_info*) __system_property_find(prop);
+    if (pi)
+        __system_property_update(pi, value, strlen(value));
+    else
+        __system_property_add(prop, strlen(prop), value, strlen(value));
+}
+
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
- 
+
 #define ALPHABET_LEN 256
 #define KB 1024
- 
+
 #define IMG_PART_PATH "/dev/block/bootdevice/by-name/modem"
 #define IMG_VER_STR "QC_IMAGE_VERSION_STRING="
 #define IMG_VER_STR_LEN 24
@@ -56,18 +69,18 @@
 #define IMG_SZ 32000 * KB    /* MMAP 32000K of modem, modem partition is 64000K */
 
 /* Boyer-Moore string search implementation from Wikipedia */
- 
+
 /* Return longest suffix length of suffix ending at str[p] */
 static int max_suffix_len(const char *str, size_t str_len, size_t p) {
     uint32_t i;
- 
+
     for (i = 0; (str[p - i] == str[str_len - 1 - i]) && (i < p); ) {
         i++;
     }
 
     return i;
 }
- 
+
 /* Generate table of distance between last character of pat and rightmost
  * occurrence of character c in pat
 */
@@ -81,7 +94,7 @@ static void bm_make_delta1(int *delta1, const char *pat, size_t pat_len) {
         delta1[idx] = pat_len - 1 - i;
     }
 }
- 
+
 /* Generate table of next possible full match from mismatch at pat[p] */
 static void bm_make_delta2(int *delta2, const char *pat, size_t pat_len) {
     int p;
@@ -103,15 +116,15 @@ static void bm_make_delta2(int *delta2, const char *pat, size_t pat_len) {
         }
     }
 }
- 
+
 static char * bm_search(const char *str, size_t str_len, const char *pat, size_t pat_len) {
     int delta1[ALPHABET_LEN];
     int delta2[pat_len];
     int i;
- 
+
     bm_make_delta1(delta1, pat, pat_len);
     bm_make_delta2(delta2, pat, pat_len);
- 
+
     if (pat_len == 0) {
         return (char *) str;
     }
@@ -128,10 +141,10 @@ static char * bm_search(const char *str, size_t str_len, const char *pat, size_t
         }
         i += MAX(delta1[(uint8_t) str[i]], delta2[j]);
     }
- 
+
     return NULL;
 }
- 
+
 static int get_img_version(char *ver_str, size_t len) {
     int ret = 0;
     int fd;
@@ -186,21 +199,10 @@ void init_target_properties()
         ERROR("Detected modem version=%s\n", modem_version);
 }
 
-    /*A6000 Plus*/
-    if (is2GB()) {
-	property_set("ro.build.product", "Kraft-A6000-s");
-        property_set("ro.product.device", "Kraft-A6000-s");
-        property_set("ro.product.model", "Lenovo A6000 Plus");
-        property_set("ro.product.name", "Kraft-A6000-s");
-    }
-    /*A6000*/
-    else {
-	property_set("ro.build.product", "Kraft-A6000");
-        property_set("ro.product.device", "Kraft-A6000");
-        property_set("ro.product.model", "Lenovo A6000");
-        property_set("ro.product.name", "Kraft-A6000");
-    }
-
+    property_set("ro.build.product", "Kraft-A6000");
+    property_set("ro.product.device", "Kraft-A6000");
+    property_set("ro.product.model", "Lenovo A6000");
+    property_set("ro.product.name", "Kraft-A6000");
     property_set("dalvik.vm.heapstartsize", "8m");
     property_set("dalvik.vm.heapgrowthlimit", is2GB() ? "192m" : "96m");
     property_set("dalvik.vm.heapsize", is2GB() ? "512m" : "256m");
@@ -209,4 +211,3 @@ void init_target_properties()
     property_set("dalvik.vm.heapmaxfree", "8m");
 
 }
-
