@@ -5,7 +5,7 @@
     "branch": "cm-14.1"
   },
   {
-    "repository":  "dev-harsh1998/kernel_lenovo_msm8916",
+    "repository":  "AICP/kernel_lenovo_msm8916",
     "target_path": "kernel/lenovo/msm8916",
     "branch": "n7.1"
   },
