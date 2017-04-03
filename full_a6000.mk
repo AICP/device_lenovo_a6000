@@ -20,6 +20,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from a6000 device
 $(call inherit-product, device/lenovo/a6000/device.mk)
 
+# Full Stack (If you Find More Tell me)
+TARGET_OTA_ASSERT_DEVICE := Kraft-T,K30T,K30-T,A6000,Kraft-W,Kraft-C,k30t,msm8916,Kraft-A6000,wt86518,wt86510
+
 # Device identifier. This must come after all inclusions
 TARGET_VENDOR := Lenovo
 PRODUCT_DEVICE := a6000
