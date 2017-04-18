@@ -20,4 +20,5 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.device.cpu=Quad Core 1.2ghz \
     ro.device.gpu=Qualcomm Adreno 306 \
     ro.device.rear_cam=8 MP \
-    ro.device.front_cam=2 MP 
+    ro.device.front_cam=2 MP \ 
+    ro.product.device=Kraft-A6000-s
