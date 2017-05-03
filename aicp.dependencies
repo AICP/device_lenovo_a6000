@@ -15,9 +15,9 @@
     "branch": "n7.1"
   },
   {
-    "repository" : "LineageOS/android_device_cyanogen_msm8916-common",
+    "repository" : "AICP/device_cyanogen_msm8916-common",
     "target_path": "device/cyanogen/msm8916-common",
-	"branch" :  "cm-14.1"
+	"branch" :  "n7.1"
   },
   {
     "repository": "LineageOS/android_external_stlport",
