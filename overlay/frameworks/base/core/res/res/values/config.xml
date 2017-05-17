@@ -230,6 +230,7 @@
     <!-- enabling WifiDisplay(Miracast Source)-->
     <bool name="config_enableWifiDisplay">true</bool>
 
-    <integer name="config_defaultLiveDisplayMode">0</integer>
+    <!-- Enable Blur for a capable device -->
+    <bool name="config_uiBlurEnabled">true</bool>
 
 </resources>
