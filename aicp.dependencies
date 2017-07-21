@@ -6,7 +6,7 @@
   },
   {
     "repository":  "AICP/kernel_lenovo_msm8916",
-    "target_path": "kernel/lenovo/msm8916",
+    "target_path": "kernel/lenovo/a6000",
     "branch": "n7.1"
   },
   {
